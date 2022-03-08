@@ -14,5 +14,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "volta": {
+    "node": "16.8.0",
+    "npm": "7.24.2"
+  }
 }
