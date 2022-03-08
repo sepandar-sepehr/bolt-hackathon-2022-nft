@@ -1,0 +1,27 @@
+{
+    "attributes": [
+        {
+            "trait_type": "body",
+            "value": "base1"
+        },
+        {
+            "trait_type": "eye",
+            "value": "eye2"
+        },
+        {
+            "trait_type": "glass",
+            "value": "none"
+        },
+        {
+            "trait_type": "background",
+            "value": "blue"
+        },
+        {
+            "trait_type": "hat",
+            "value": "hat4"
+        }
+    ],
+    "description": "Bolter",
+    "image": "https://gateway.pinata.cloud/ipfs/QmcxANy9Z41F9Ja3dZH1CyUybBbv5kwyvjZzTuiyKDpSAA",
+    "name": "Bolter-0598"
+}

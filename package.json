@@ -1,9 +1,10 @@
 {
   "dependencies": {
-    "@koa/router": "^10.0.0",
-    "koa": "^2.13.1",
-    "opensea-js": "^3.0.0",
-    "web3": "^1.7.1"
+    "@alch/alchemy-web3": "^1.2.5",
+    "@openzeppelin/contracts": "^4.5.0",
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
+    "koa": "^2.13.4"
   },
   "name": "2022hack",
   "version": "1.0.0",
@@ -16,7 +17,12 @@
   "license": "ISC",
   "description": "",
   "volta": {
-    "node": "16.8.0",
-    "npm": "7.24.2"
+    "node": "16.14.0",
+    "npm": "8.5.3"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "ethers": "^5.5.4",
+    "hardhat": "^2.9.1"
   }
 }
