@@ -5,7 +5,10 @@
     "@openzeppelin/contracts": "^4.5.0",
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
-    "koa": "^2.13.4"
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-static": "^5.0.0"
   },
   "name": "2022hack",
   "version": "1.0.0",
