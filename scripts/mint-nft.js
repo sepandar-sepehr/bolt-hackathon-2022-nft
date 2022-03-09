@@ -1,3 +1,5 @@
+'use strict';
+
 require("dotenv").config()
 const API_URL = process.env.API_URL
 const PUBLIC_KEY = process.env.PUBLIC_KEY
@@ -22,33 +24,13 @@ async function mintNFT(tokenURI) {
         data: nftContract.methods.mintNFT(PUBLIC_KEY, tokenURI).encodeABI(),
     }
 
-    const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
-    signPromise
-        .then((signedTx) => {
-            web3.eth.sendSignedTransaction(
-                signedTx.rawTransaction,
-                function (err, hash) {
-                    if (!err) {
-                        console.log(
-                            "The hash of your transaction is: ",
-                            hash,
-                            "\nCheck Alchemy's Mempool to view the status of your transaction!"
-                        )
-                    } else {
-                        console.log(
-                            "Something went wrong when submitting your transaction:",
-                            err
-                        )
-                    }
-                }
-            )
-        })
-        .catch((err) => {
-            console.log(" Promise failed:", err)
-        })
+    const txReceipt = await performTransaction(tx)
+    let tokenID = web3.utils.hexToNumber(txReceipt.logs[0].topics[3]);
+    console.log('tokenID: ' + tokenID);
+    return tokenID
 }
 
-async function sendToken() {
+async function sendToken(walletId, tokenID) {
     const nonce = await web3.eth.getTransactionCount(PUBLIC_KEY, "latest") //get latest nonce
 
     //the transaction
@@ -57,13 +39,19 @@ async function sendToken() {
         to: contractAddress,
         nonce: nonce,
         gas: 500000,
-        data: nftContract.methods.safeTransferFrom(PUBLIC_KEY, "0x7aaa2785baaf248b91fbc64b70280bcf3ddd4e09", "1").encodeABI(),
+        data: nftContract.methods.safeTransferFrom(PUBLIC_KEY, walletId, tokenID.toString()).encodeABI(),
     }
 
+    await performTransaction(tx)
+
+    return `successful transfer of ${tokenID} to ${walletId}`
+}
+
+function performTransaction(tx) {
     const signPromise = web3.eth.accounts.signTransaction(tx, PRIVATE_KEY)
-    signPromise
+    return signPromise
         .then((signedTx) => {
-            web3.eth.sendSignedTransaction(
+            return web3.eth.sendSignedTransaction(
                 signedTx.rawTransaction,
                 function (err, hash) {
                     if (!err) {
@@ -79,6 +67,12 @@ async function sendToken() {
                         )
                     }
                 }
+            ).then(
+                txReceipt => {
+                    console.log('receipt for tx: ')
+                    console.log(txReceipt)
+                    return txReceipt
+                }
             )
         })
         .catch((err) => {
@@ -86,8 +80,17 @@ async function sendToken() {
         })
 }
 
-// mintNFT(
-//     "https://gateway.pinata.cloud/ipfs/QmcGFX5rA1FfxDJBBRXrxJYpx3hV7us7o722Rq5jCuKzPK"
-// )
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
+    }
+}
 
-sendToken()
+
+// mintNFT(
+//     "https://gateway.pinata.cloud/ipfs/QmaiU2NFMHFSKiWxXV9kSCtafJijUkE4PJM34Xs9o874uN"
+// )
+module.exports = {sendToken, mintNFT}

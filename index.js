@@ -1,56 +1,34 @@
 'use strict';
-// import * as Web3 from 'web3'
-// import { OpenSeaPort, Network } from 'opensea-js'
-
-const Web3 = require('web3')
-const { OpenSeaPort, Network } = require('opensea-js')
 
 const Koa = require('koa');
 const Router = require('@koa/router');
+
+const MintNFT = require("./scripts/mint-nft");
+const PinFile = require("./scripts/pin-file");
 
 const app = new Koa();
 const router = new Router();
 
 router.get('/', (ctx) => {
-  ctx.body = 'Hello World';
+  ctx.body = 'Check the Readme';
 });
 
-const accountAddress = '0x7aaa2785baaf248b91fbc64b70280bcf3ddd4e09';
-const tokenAddress = '0x88B48F654c30e99bc2e4A1559b4Dcf1aD93FA656';
-const tokenID = '87787896460721781419097609855645980354241538650715174651679292838257566416897'
-
-router.get('/assets', (ctx, next) => {
-    // This example provider won't let you make transactions, only read-only calls:
-    const provider = new Web3.providers.HttpProvider('https://rinkeby.infura.io')
-
-    const seaport = new OpenSeaPort(provider, {
-        networkName: Network.Rinkeby,
-       // apiKey: YOUR_API_KEY
-    })
-
-    //getAsset(seaport);
+// technically this has to be a "post" but just to make our lives easier for hackathon to use browser made it get
+router.get('/transfer/:receiverWalletId', (ctx, next) => {
+    console.log(ctx.params.receiverWalletId)
+    PinFile.pinFileToIPFS().then(function (response) {
+            PinFile.pinJSONToIPFS(response.ipfsHash, response.fileName).then(function(tokenURI){
+                MintNFT.mintNFT(tokenURI).then(function(tokenID){
+                    MintNFT.sendToken(ctx.params.receiverWalletId, tokenID)
+                        .then(result => {
+                            console.log(result)
+                        });
+                })
+            })
+        })
+    ctx.response.status = 200;
+    ctx.body = 'Transferring a new NFT asynchronously'
 });
-
-async function getAsset(seaport) {
-    try {
-        // const asset = await seaport.getTokenBalance({
-        //     accountAddress, // string
-        //     tokenAddress, // string | number | null
-        // });
-
-        const asset = await seaport.api.getAsset({
-            tokenAddress, // string
-            tokenID, // string | number | null
-          })
-        console.log(asset);
-        return asset;
-    } catch (e) {
-        console.log(e.message);
-        return null;
-    }
-    
-}
-
 
 app
   .use(router.routes())

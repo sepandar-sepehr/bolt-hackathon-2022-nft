@@ -1,0 +1,7 @@
+{
+    "attributes": [
+    ],
+    "description": "NFT of ${file_name}",
+    "image": "https://gateway.pinata.cloud/ipfs/${ipfs_hash}",
+    "name": "${file_name}"
+}
