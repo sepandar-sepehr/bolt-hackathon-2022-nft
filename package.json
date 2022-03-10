@@ -3,6 +3,7 @@
     "@alch/alchemy-web3": "^1.2.5",
     "@koa/router": "^10.1.1",
     "@openzeppelin/contracts": "^4.5.0",
+    "api": "^4.2.0",
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
     "koa": "^2.13.4"
