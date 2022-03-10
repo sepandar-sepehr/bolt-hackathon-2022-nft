@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@alch/alchemy-web3": "^1.2.5",
+    "@koa/multer": "^3.0.0",
     "@koa/router": "^10.1.1",
     "@openzeppelin/contracts": "^4.5.0",
     "axios": "^0.26.0",
@@ -8,7 +9,9 @@
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
     "koa-bodyparser": "^4.3.0",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "koa2-formidable": "^1.0.3",
+    "multer": "^1.4.4"
   },
   "name": "2022hack",
   "version": "1.0.0",
