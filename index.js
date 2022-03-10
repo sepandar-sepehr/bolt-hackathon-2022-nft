@@ -5,6 +5,7 @@ const Router = require('@koa/router');
 
 const MintNFT = require("./scripts/mint-nft");
 const PinFile = require("./scripts/pin-file");
+const LookupNFT = require("./scripts/lookup-nft")
 
 const app = new Koa();
 const router = new Router();
@@ -28,6 +29,13 @@ router.get('/transfer/:receiverWalletId', (ctx, next) => {
         })
     ctx.response.status = 200;
     ctx.body = 'Transferring a new NFT asynchronously'
+});
+
+router.get('/transferFromMerchant/:receiverWalletId', (ctx, next) => {
+    console.log(ctx.params.receiverWalletId)
+    LookupNFT.transferFromMerchantWallet(ctx.params.receiverWalletId).then(res => {
+        ctx.body = res
+    })
 });
 
 app
